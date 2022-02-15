@@ -87,8 +87,10 @@ Tile* GetCursorTile(Board board){
 	int mouseX = GetMouseX();
 	int mouseY = GetMouseY();
 
-	int xIndex = (mouseX - board.basePosX)/tileSize;
-	int yIndex = (mouseY - board.basePosY)/tileSize;
+	int xIndex = (mouseX - board.basePosX) < 0 ? -1 : (mouseX - board.basePosX)/tileSize;
+	int yIndex = (mouseY - board.basePosY) < 0 ? -1 : (mouseY - board.basePosY)/tileSize;
+
+	//Se a posição relativa do mouse ao tabuleiro for negativa, o index vira 0
 
 	printf("%d %d\n", xIndex, yIndex);
 
