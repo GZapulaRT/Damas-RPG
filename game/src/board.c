@@ -21,6 +21,7 @@ Board CreateLogicBoard()
 		//---------------------------------------------------------------------------
 		for(int j = 0; j < boardSize; j++)
 		{
+			logicBoard.board[i][j].selected = false;
 			if((i+j)%2)
 			{
 				if(j < 3)
@@ -51,8 +52,16 @@ void DrawBoard(Board logicBoard)
 	for(int i = 0; i < boardSize; i++)
     	for(int j = 0; j < boardSize; j++)
     	{	
-    		
-    		DrawRectangle(logicBoard.basePosX+i*tileSize, logicBoard.basePosY+j*tileSize, tileSize, tileSize, (i+j)%2?GetColor(0Xc1d8f5ff):GetColor(0X13012bff));
+    		Color color;
+
+			if(logicBoard.board[i][j].selected){
+				color = RED;
+			}
+			else{
+				color = (i+j)%2?GetColor(0Xc1d8f5ff):GetColor(0X13012bff);
+			}
+
+    		DrawRectangle(logicBoard.basePosX+i*tileSize, logicBoard.basePosY+j*tileSize, tileSize, tileSize, color);
 
     		if(logicBoard.board[i][j].piece != NULL)
     		{
@@ -91,8 +100,6 @@ Tile* GetCursorTile(Board board){
 	int yIndex = (mouseY - board.basePosY) < 0 ? -1 : (mouseY - board.basePosY)/tileSize;
 
 	//Se a posição relativa do mouse ao tabuleiro for negativa, o index vira 0
-
-	printf("%d %d\n", xIndex, yIndex);
 
 	if(xIndex >= 0 && xIndex < boardSize && yIndex >= 0 && yIndex < boardSize){
 		return &(board.board[xIndex][yIndex]);

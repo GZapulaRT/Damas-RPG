@@ -1,4 +1,5 @@
 #include "raylib.h"
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -12,6 +13,8 @@ int main(void)
     //--------------------------------------------------------------------------------------
     const int screenWidth = 920;
     const int screenHeight = 750;
+
+    Tile* selectedTile = NULL;
 
     Board board = CreateLogicBoard();
 
@@ -40,7 +43,17 @@ int main(void)
 
         EndDrawing();
 
-        GetCursorTile(board);
+        if(IsMouseButtonDown(MOUSE_LEFT_BUTTON)){
+            Tile* cursorTile = GetCursorTile(board);
+            
+            if(selectedTile != NULL) selectedTile->selected = false;
+
+            if(cursorTile != NULL){
+                cursorTile->selected = true;
+            }
+            
+            selectedTile = cursorTile;
+        }
 
         //----------------------------------------------------------------------------------
     }

@@ -12,6 +12,7 @@ extern const int boardSize;
 typedef struct Tile{
 	// char tileType[5];
 	struct Piece* piece;
+	bool selected;
 }Tile;
 
 typedef struct Board{
