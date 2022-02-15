@@ -16,11 +16,14 @@ typedef struct Tile{
 
 typedef struct Board{
 	Tile** board;
+	int basePosX, basePosY;
 }Board;
 
 Board CreateLogicBoard();
-void CreateVisualBoard(Board);
+void DrawBoard(Board);
 void ClearBoard(Board);
 Piece PieceInfo();
+Tile* GetCursorTile(Board);
+void UpdateBasePos(Board*);
 
 #endif

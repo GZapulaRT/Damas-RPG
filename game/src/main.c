@@ -34,9 +34,14 @@ int main(void)
 
             	ClearBackground(RAYWHITE);
 
-            	CreateVisualBoard(board);
+                UpdateBasePos(&board);
+                
+            	DrawBoard(board);
 
         EndDrawing();
+
+        GetCursorTile(board);
+
         //----------------------------------------------------------------------------------
     }
 
