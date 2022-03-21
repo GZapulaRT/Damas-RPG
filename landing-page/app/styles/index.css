@@ -1,0 +1,124 @@
+body, html {
+    width: 100%;
+    height: 100%;
+    padding: 0px;
+    margin: 0px;
+}
+
+ul {
+    list-style: none;
+}
+
+/* main */
+
+#main-bg {
+    position: absolute;
+    width: 100%;
+    height: 625px;
+    left: 0px;
+    top: 0px;
+}
+
+/* navbar */
+
+#navbar {
+    position: absolute;
+    width: 100%;
+    height: 60px;
+    left: 0px;
+    top: 625px;
+    color: #d7bd39;
+
+    background: #1a1515;
+}
+
+#navbar-icon {
+    float: left;
+    display: inline;
+}
+
+#itens li{
+    display: inline;
+    float: right;
+    padding-right: 40px;
+
+}
+
+/* about */
+
+#about-bg{
+    
+    position: absolute;
+    width: 100%;
+    height: 428px;
+    left: 0px;
+    top: 685px;
+
+}
+
+#about p{
+    position: relative;
+    top: 821px;
+    padding-left: 400px;
+    
+}
+
+/* something */
+
+#something-bg{
+    position: absolute;
+    width: 100%;
+    height: 504px;
+    left: 0px;
+    top: 1113px;
+
+
+}
+
+/* tournament */
+
+#tournaments-bg{
+    position: absolute;
+    width: 100%;
+    height: 740px;
+    left: 0px;
+    top: 1617px;
+}
+
+/* news */
+
+#news{
+
+    position: absolute;
+    width: 100%;
+    height: 500px;
+    left: 0px;
+    top: 2357px;
+
+    background: #3f3838;
+
+}
+
+
+/* ender */
+
+#ender{
+    position: absolute;
+    width: 100%;
+    height: 118px;
+    left: 0px;
+    top: 2857px;
+
+    background: #292525;
+}
+
+#left_text{
+    display: inline;
+    float: right;
+    
+}
+
+#icon {
+    display: inline;
+    float: left;
+}
