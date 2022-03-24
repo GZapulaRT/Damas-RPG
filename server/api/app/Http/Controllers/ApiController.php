@@ -4,17 +4,28 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use App\Models\Player;
+
 class ApiController extends Controller
 {
-	public function AddUser() {
+	public function AddUser(request $request) {
 		// Add a new user to our user table
+		$user = new Player;
+	    $user->user_name = $request->user_name;	
+		$user->country_code = $request->country_code;
+		$user->save();
+
+		return response()->json([
+			"message" => "essa bagaça funciona por Magica(\$seiLáOq)"
+		], 201);
+
 
 	}
 	public function UpdateUser() {
 		//Update Username and country in our user table
 
 	}
-
+ 
 	public function UpdateScoreData() {
 		// Add a score record to our score table. Used to add all
 		// score records to give us the user rank placement

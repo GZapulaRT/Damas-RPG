@@ -17,3 +17,11 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::post('/user', 'App\Http\Controllers\ApiController@AddUser');
+
+/* Route::get('user', 'ApiController@GetAllUsers'); */
+/* Route::get('user/{id}', 'ApiController@GetSpecificUsers'); */
+/* Route::post('score', 'ApiController@UpdateScoreData'); */
+/* Route::post('status', 'ApiController@UpdateStatus'); */
+/* Route::put('user/{id}', 'ApiController@UpdateUser'); */
