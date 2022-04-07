@@ -55,15 +55,20 @@ int main(void)
                 if(cursorTile)
                     if(
                         (cursorTile->x + cursorTile->y)%2 && //Se a tile for válida, 
-                        cursorTile->piece == NULL && // Sem peça,
                         (abs(cursorTile->x - selectedTile->x) <= selectedTile->piece->Mov && 
                         abs(cursorTile->y - selectedTile->y) <= selectedTile->piece->Mov) // E dentro dos parametros de movimento da peça
                       ) 
                     {
-                        cursorTile->piece = selectedTile->piece; // transfere a peça
-                        selectedTile->piece = NULL;
+                        if(cursorTile->piece == NULL || cursorTile->piece->Owner != playerTurn){ //Se for um espaço vazio ou uma peça oponente
 
-                        playerTurn = !playerTurn;   // passa a rodada
+                            if(cursorTile->piece){free(cursorTile->piece);} //Limpa a memória se for uma peça oponente
+
+                            cursorTile->piece = selectedTile->piece; // transfere a peça
+                            selectedTile->piece = NULL;
+                            playerTurn = !playerTurn;   // passa a rodada
+                        }
+                        
+                        
                     }
                 
                 selectedTile->selected = false; //desseleciona a tile
