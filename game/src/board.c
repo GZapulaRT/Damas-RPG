@@ -4,6 +4,7 @@
 
 const int tileSize = 55;
 const int boardSize = 12;
+	// Tratar sempre com valores pares de tabuleiro, caso contrário uma linha pode ter mais peças.
 
 Board CreateLogicBoard()
 {
@@ -22,17 +23,25 @@ Board CreateLogicBoard()
 		for(int j = 0; j < boardSize; j++)
 		{
 			logicBoard.board[i][j].selected = false;
+			logicBoard.board[i][j].x = i;
+			logicBoard.board[i][j].y = j;
 			if((i+j)%2)
 			{
 				if(j < 3)
 				{
 					logicBoard.board[i][j].piece = malloc(sizeof(Piece));
 					logicBoard.board[i][j].piece->Owner = 0;
+					logicBoard.board[i][j].piece->HP = 1;
+					logicBoard.board[i][j].piece->Atk = 1;
+					logicBoard.board[i][j].piece->Mov = 1;
 				}
 				else if(j > boardSize - 4)
 				{
 					logicBoard.board[i][j].piece = malloc(sizeof(Piece));
-					logicBoard.board[i][j].piece->Owner = 1;	
+					logicBoard.board[i][j].piece->Owner = 1;
+					logicBoard.board[i][j].piece->HP = 1;
+					logicBoard.board[i][j].piece->Atk = 1;
+					logicBoard.board[i][j].piece->Mov = 2;
 				}
 				else
 				{

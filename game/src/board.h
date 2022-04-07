@@ -11,6 +11,8 @@ extern const int boardSize;
 
 typedef struct Tile{
 	// char tileType[5];
+	int x, y;
+	// x & y são valores tratados como posição em plano cartesiano, não posição matricial.
 	struct Piece* piece;
 	bool selected;
 }Tile;
