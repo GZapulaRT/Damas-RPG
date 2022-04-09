@@ -21,6 +21,12 @@ int main(void)
 
     int score[2] = {0,0};
 
+    Vector2 turn_indicator_tri[3];
+    Color turn_indicator_color;
+
+    int loop_timer = 0;
+    float turn_indicator_offset;
+
     char score_text_p1[128], score_text_p2[128];
 
     Board board = CreateLogicBoard();
@@ -34,6 +40,30 @@ int main(void)
     while (!WindowShouldClose())    // Detect window close button or ESC key
     {
 
+        //Timer de animação pra coisas que rodam em loop
+        loop_timer++;
+
+
+        //Construindo o indicador de turno...
+
+        turn_indicator_offset = (sinf(loop_timer*PI/30))*10;
+
+        if(playerTurn == 0){
+            turn_indicator_tri[0].x = board.basePosX+(boardSize*tileSize)-turn_indicator_offset; turn_indicator_tri[0].y = board.basePosY-40;
+            turn_indicator_tri[2].x = board.basePosX+(boardSize*tileSize)-turn_indicator_offset; turn_indicator_tri[2].y = board.basePosY-10;
+            turn_indicator_tri[1].x = board.basePosX+(boardSize*tileSize)-turn_indicator_offset-20; turn_indicator_tri[1].y = board.basePosY-25;
+            turn_indicator_color = DARKBLUE;
+        }
+        else{
+            turn_indicator_tri[1].x = board.basePosX+turn_indicator_offset; turn_indicator_tri[1].y = board.basePosY+40+(boardSize*tileSize);
+            turn_indicator_tri[0].x = board.basePosX+turn_indicator_offset; turn_indicator_tri[0].y = board.basePosY+10+(boardSize*tileSize);
+            turn_indicator_tri[2].x = board.basePosX+20+turn_indicator_offset; turn_indicator_tri[2].y = board.basePosY+25+(boardSize*tileSize);
+            turn_indicator_color = DARKGREEN;
+        }
+        
+        //Os índices aqui estão todos fodidos por que o raylib só aceita vértices no DrawTriangle se elas forem em sentido anti-horário. Culpe o Raymond Hill essa bagunça -lua 9/4/2022 12:20
+
+        //Strings de pontuação.
         sprintf(score_text_p1, "Pontos J1: %d", score[0]);
         sprintf(score_text_p2, "Pontos J2: %d", score[1]);
 
@@ -45,8 +75,13 @@ int main(void)
                 
             	DrawBoard(board);
 
-                DrawText(score_text_p1, board.basePosX, board.basePosY-40, 25, DARKBLUE);
-                DrawText(score_text_p2, board.basePosX, board.basePosY+(tileSize*boardSize)+15, 25, DARKGREEN);
+                //Desenhar as pontuações.
+                DrawText(score_text_p1, board.basePosX-20, board.basePosY-40, 25, DARKBLUE);
+                DrawText(score_text_p2, board.basePosX+(tileSize*boardSize)-120, board.basePosY+(tileSize*boardSize)+15, 25, DARKGREEN);
+
+
+                //Indicador de turno; ver linhas 43-64
+                DrawTriangle(turn_indicator_tri[0], turn_indicator_tri[1], turn_indicator_tri[2], turn_indicator_color);
 
         EndDrawing();
 
