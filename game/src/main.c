@@ -19,6 +19,10 @@ int main(void)
 
     int playerTurn = 0;
 
+    int score[2] = {0,0};
+
+    char score_text_p1[128], score_text_p2[128];
+
     Board board = CreateLogicBoard();
 
     InitWindow(screenWidth, screenHeight, "Damas");
@@ -29,13 +33,10 @@ int main(void)
     // Main game loop
     while (!WindowShouldClose())    // Detect window close button or ESC key
     {
-        // Update
-        //----------------------------------------------------------------------------------
-        // TODO: Update your variables here
-        //----------------------------------------------------------------------------------
 
-        // Draw
-        //----------------------------------------------------------------------------------
+        sprintf(score_text_p1, "Pontos J1: %d", score[0]);
+        sprintf(score_text_p2, "Pontos J2: %d", score[1]);
+
         BeginDrawing();
 
             	ClearBackground(RAYWHITE);
@@ -43,6 +44,9 @@ int main(void)
                 UpdateBasePos(&board);
                 
             	DrawBoard(board);
+
+                DrawText(score_text_p1, board.basePosX, board.basePosY-40, 25, DARKBLUE);
+                DrawText(score_text_p2, board.basePosX, board.basePosY+(tileSize*boardSize)+15, 25, DARKGREEN);
 
         EndDrawing();
 
@@ -61,7 +65,10 @@ int main(void)
                     {
                         if(cursorTile->piece == NULL || cursorTile->piece->Owner != playerTurn){ //Se for um espaço vazio ou uma peça oponente
 
-                            if(cursorTile->piece){free(cursorTile->piece);} //Limpa a memória se for uma peça oponente
+                            if(cursorTile->piece){
+                                score[playerTurn]++;
+                                free(cursorTile->piece);
+                            } //Adiciona score e Limpa a memória se for uma peça oponente
 
                             cursorTile->piece = selectedTile->piece; // transfere a peça
                             selectedTile->piece = NULL;
