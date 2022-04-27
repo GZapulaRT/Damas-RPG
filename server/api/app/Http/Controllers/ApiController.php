@@ -4,9 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-use App\Models\Player;
-use App\Models\Score;
-use App\Models\Status;
+use App\Models\{Player, Status, Score};
+
 
 class ApiController extends Controller
 {
@@ -20,11 +19,17 @@ class ApiController extends Controller
 		return response()->json([
 			"message" => "essa bagaça funciona por Magica(\$seiLáOq)"
 		], 201);
-
+ 
 
 	}
-	public function UpdateUser(request $id) {
+	public function UpdateUser($userId, request $request) {
 		//Update Username and country in our user table
+
+		$user = Player::find($userId);
+		$newUserName=$request->name;
+		$user->name = $newUserName;
+		$user->save();
+
 
 	}
  

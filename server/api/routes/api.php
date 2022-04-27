@@ -21,7 +21,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::post('/user', 'App\Http\Controllers\ApiController@AddUser');
 
 /* Route::get('user', 'ApiController@GetAllUsers'); */
-/* Route::get('user/{id}', 'ApiController@GetSpecificUsers'); */
+/* Route::get('user/{userId}', 'ApiController@GetSpecificUsers'); */
 /* Route::post('score', 'ApiController@UpdateScoreData'); */
 /* Route::post('status', 'ApiController@UpdateStatus'); */
-/* Route::put('user/{id}', 'ApiController@UpdateUser'); */
+/* Route::put('user/{userId}', 'ApiController@UpdateUser'); */

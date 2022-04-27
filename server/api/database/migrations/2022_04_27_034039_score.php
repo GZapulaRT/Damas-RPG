@@ -13,10 +13,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('user', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
-        });
+		Schema::create('score', function(Blueprint $table){
+			$table->id('score_id');
+			$table->bigInteger('player_id')->unsigned();
+			$table->foreign('player_id')
+				->references('player_id')
+			 	->on('player');
+			$table->string('score_change');
+			$table->timestamp('score_created_at');
+		});
     }
 
     /**
@@ -26,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-		Schema::dropIfExists('user');
+    	Schema::dropIfExists('score');
     }
 };
