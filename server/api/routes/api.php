@@ -18,7 +18,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('/user', 'App\Http\Controllers\ApiController@AddUser');
+Route::post('/user', 'App\Http\Controllers\ApiPlayerController@addPlayer');
 
 /* Route::get('user', 'ApiController@GetAllUsers'); */
 /* Route::get('user/{userId}', 'ApiController@GetSpecificUsers'); */
