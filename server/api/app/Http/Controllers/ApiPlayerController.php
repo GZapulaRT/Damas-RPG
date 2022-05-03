@@ -22,7 +22,7 @@ class ApiPlayerController extends Controller
  
 
 	}
-	public function UpdateUser($userId, request $request) {
+	public function updateUser($userId, request $request) {
 		//Update Username and country in our user table
 
 		$user = Player::find($userId);
@@ -33,13 +33,25 @@ class ApiPlayerController extends Controller
 
 	}
 
-	public function GetAllUsers($place, $numberOfUsers) {
-		// Get all users from a specific place (or the whole world in case of NULL)
-		// for the ranking page
+	public function getUser($id, Request $numberOfUsers, $position){
+		if ($id) return getSpecificUser($id);
+		return getAllUsers($numberOfUsers, $position);
 	}
 
-	public function GetSpecificUser ($id) {
-		//Get one user info for the user personal page
+	private function getAllUsers($numberOfUsers, $position) {
+		// Get all users from a specific place (or the whole world in case of NULL)
+		// for the ranking page
+
+		$player = Player->find($id);
+		return response()->json([
+			"name" => $player->player_name,
+			"position" => 1
+		]);
 	}
+
+
+	private function getSpecificUser ($id) {
+		//Get one user info for the user personal page
+		
 
 }
