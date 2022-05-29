@@ -5,7 +5,9 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\{ApiPlayerController,
 					 	ApiScoreController,
 						ApiStatusController,
-						ApiCountryController};
+                        ApiCountryController,
+                        ApiTestController,
+                        ApiController};
 
 /*
 |--------------------------------------------------------------------------
@@ -18,14 +20,15 @@ use App\Http\Controllers\{ApiPlayerController,
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+/* Route::middleware('auth:sanctum')->get('/user', function (Request $request) { */
+/*     return $request->user(); */
+/* }); */
 
-Route::post('/user/add', [ApiPlayerController::class, 'addPlayer']);
-Route::post('/score/add', [ApiScoreController::class, 'addScore']);
+Route::controller(ApiController::class)->group(function () {
+    Route::get('/user/one/{id}', 'oneUser');
+    Route::get('/user/{page?}', 'allUsers');
+    Route::get('/rank/{page?}', 'topResults');
+    });
 
-/* Route::get('user', 'ApiController@GetAllUsers'); */
-/* Route::get('user/{userId}', 'ApiController@GetSpecificUsers'); */
-/* Route::post('status', 'ApiController@UpdateStatus'); */
-/* Route::put('user/{userId}', 'ApiController@UpdateUser'); */
+//added for some testing, too lazy to actually do a proper PHPunit test
+Route::get('/test', [ApiTestController::class, 'insertRank']);

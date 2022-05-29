@@ -14,13 +14,10 @@ return new class extends Migration
     public function up()
     {
         //
-		Schema::create('rank', function(Blueprint $table){
-			$table->id('rank_id');	
-			$table->unsignedBigInteger('rank_player_id');
-			$table->foreign('rank_player_id')
-		 		->references('player_id')
-				->on('player');
-			$table->bigInteger('rank_current_score');
+		Schema::create('ranks', function(Blueprint $table){
+			$table->id();	
+            $table->foreignId('user_id')->constrained();
+			$table->bigInteger('current_score');
 		});
     }
 
@@ -31,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-    	Schema::dropIfExists('rank');
+    	Schema::dropIfExists('ranks');
     }
 };

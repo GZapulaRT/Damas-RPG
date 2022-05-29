@@ -6,6 +6,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\DB;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
@@ -21,7 +22,9 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'country_id',
     ];
+    private const PAGE_SIZE = 100;
 
     /**
      * The attributes that should be hidden for serialization.
@@ -41,4 +44,25 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function rank(){
+        return $this->hasOne(Rank::class);
+    }
+
+    public static function getOneUser($id){
+        $user = self::find($id);
+        return response()->json($user, 200);
+    }
+
+    public static function getMultipleUsers(int $page = 0){
+        $offset = $page * self::PAGE_SIZE;
+
+        $users = DB::table('users')
+                        ->orderby('name')
+                        ->offset($offset)
+                        ->limit(self::PAGE_SIZE)
+                        ->get();
+
+       return response()->json($users, 200);
+    }
 }
