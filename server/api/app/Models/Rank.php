@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Jobs\ProcessRank;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
@@ -15,6 +16,15 @@ class Rank extends Model
     public $timestamps = false;
 
     public const PAGE_SIZE = 100;
+
+    public function scores(){
+        return $this->hasMany(Score::class);
+    }
+
+    public static function updateRanks(Score $score) :void {
+        $queue = new ProcessRank($score);
+        $queue->dispatch($score);
+    }
 
     public static function getTopResults(int $page=0){
         $offset = $page * self::PAGE_SIZE;

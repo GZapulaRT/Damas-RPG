@@ -2,12 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\{ApiPlayerController,
-					 	ApiScoreController,
-						ApiStatusController,
-                        ApiCountryController,
-                        ApiTestController,
-                        ApiController};
+use App\Http\Controllers\{ApiController};
 
 /*
 |--------------------------------------------------------------------------
@@ -28,6 +23,7 @@ Route::controller(ApiController::class)->group(function () {
     Route::get('/user/one/{id}', 'oneUser');
     Route::get('/user/{page?}', 'allUsers');
     Route::get('/rank/{page?}', 'topResults');
+    Route::post('/score/add', 'updateScore');
     });
 
 //added for some testing, too lazy to actually do a proper PHPunit test

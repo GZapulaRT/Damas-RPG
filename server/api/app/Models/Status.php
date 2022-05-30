@@ -8,9 +8,14 @@ class Status extends Model
 {
     use HasFactory;
 	protected $table = 'status';
-	protected $fillable = ['player_id', 'status_current', 'status_comment', 'status_created_at'];
+	protected $fillable = ['user_id', 'status', 'status'];
 
-	public $timestamps = ['created_at'];
-	const CREATED_AT = 'status_created_at';
-	const UPDATED_AT = null;
+
+    function status(){
+        return $this->hasOne(User::class);
+    }
+
+    function latestStatus($id){
+        $this->find($id)->latest();
+    }
 }

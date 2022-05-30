@@ -13,6 +13,8 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
+    private const PAGE_SIZE = 100;
+
     /**
      * The attributes that are mass assignable.
      *
@@ -24,7 +26,6 @@ class User extends Authenticatable
         'password',
         'country_id',
     ];
-    private const PAGE_SIZE = 100;
 
     /**
      * The attributes that should be hidden for serialization.
@@ -51,6 +52,9 @@ class User extends Authenticatable
 
     public static function getOneUser($id){
         $user = self::find($id);
+        if ($user === null){
+            return response()->json(['message: ' => 'User not found', 404 ]);
+        }
         return response()->json($user, 200);
     }
 
@@ -62,7 +66,9 @@ class User extends Authenticatable
                         ->offset($offset)
                         ->limit(self::PAGE_SIZE)
                         ->get();
-
+       if ($users === null){
+            return response()->json(['message: ' => 'Users not found', 404 ]);
+        }
        return response()->json($users, 200);
     }
 }

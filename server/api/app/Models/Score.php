@@ -8,10 +8,23 @@ use Illuminate\Database\Eloquent\Model;
 class Score extends Model
 {
     use HasFactory;
-	protected $table = 'score';
-	protected $fillable = ['player_id', 'score_change', 'score_created_at'];
+	protected $table = 'scores';
+	protected $fillable = ['user_id', 'change'];
 
-	public $timestamps = ['created_at'];
-	const CREATED_AT = 'score_created_at';
-	const UPDATED_AT = null;
+    const UPDATED_AT = null;
+
+    public Function rank(){
+        return $this->hasOne(Rank::class);
+    }
+
+    public static function updateScore($user_id, $change){
+        $score = self::create([
+            'user_id' => $user_id,
+            'change' => $change
+        ]);
+
+        Rank::updateRanks($score);
+        return response()->json(['message: ' => 'Score added sucessfuly'], 201);
+        //criar evento de atualizar rank
+    }
 }
