@@ -58,14 +58,10 @@ class User extends Authenticatable
         return response()->json($user, 200);
     }
 
-    public static function getMultipleUsers(int $page = 0){
-        $offset = $page * self::PAGE_SIZE;
-
+    public static function getMultipleUsers(){
         $users = DB::table('users')
                         ->orderby('name')
-                        ->offset($offset)
-                        ->limit(self::PAGE_SIZE)
-                        ->get();
+                        ->paginate(self::PAGE_SIZE);
        if ($users === null){
             return response()->json(['message: ' => 'Users not found', 404 ]);
         }

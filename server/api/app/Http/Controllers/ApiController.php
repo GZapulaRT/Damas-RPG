@@ -13,8 +13,8 @@ class ApiController extends Controller
         return $user;
     }
 
-    public function allUsers(int $page = 0){
-        $users = User::getMultipleUsers($page);
+    public function allUsers(){
+        $users = User::getMultipleUsers();
         return $users;
     }
 
@@ -25,8 +25,8 @@ class ApiController extends Controller
         return $response;
     }
 
-    public function topResults(int $page = 0){
-        $top_results = Rank::getTopResults($page);
+    public function topResults(){
+        $top_results = Rank::getTopResults();
         return $top_results;
     }
 
