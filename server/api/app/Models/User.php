@@ -6,14 +6,11 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Facades\DB;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
-
-    private const PAGE_SIZE = 100;
 
     /**
      * The attributes that are mass assignable.
@@ -48,23 +45,5 @@ class User extends Authenticatable
 
     public function rank(){
         return $this->hasOne(Rank::class);
-    }
-
-    public static function getOneUser($id){
-        $user = self::find($id);
-        if ($user === null){
-            return response()->json(['message: ' => 'User not found', 404 ]);
-        }
-        return response()->json($user, 200);
-    }
-
-    public static function getMultipleUsers(){
-        $users = DB::table('users')
-                        ->orderby('name')
-                        ->paginate(self::PAGE_SIZE);
-       if ($users === null){
-            return response()->json(['message: ' => 'Users not found', 404 ]);
-        }
-       return response()->json($users, 200);
     }
 }

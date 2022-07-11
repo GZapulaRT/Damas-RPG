@@ -15,7 +15,4 @@ class Status extends Model
         return $this->hasOne(User::class);
     }
 
-    function latestStatus($id){
-        $this->find($id)->latest();
-    }
 }

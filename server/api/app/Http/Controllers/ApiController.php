@@ -3,18 +3,24 @@
 namespace App\Http\Controllers;
 
 use App\Models\{User,Rank, Score};
+use App\Repository\RankRepository;
+use App\Repository\UserRepository;
 use Illuminate\Http\Request;
 
 
 class ApiController extends Controller
 {
     public function oneUser($id){
-        $user = User::getOneUser($id);
-        return $user;
+        $user = new User;
+        $allusers = new UserRepository($user);
+        $allusers = $allusers->getOneUser($id);
+        return $allusers;
     }
 
     public function allUsers(){
-        $users = User::getMultipleUsers();
+        $user = new User;
+        $users = new UserRepository($user);
+        $users = $users->getMultipleUsers();
         return $users;
     }
 
@@ -26,7 +32,8 @@ class ApiController extends Controller
     }
 
     public function topResults(){
-        $top_results = Rank::getTopResults();
+        $top_results = new RankRepository();
+        $top_results = $top_results->getTopResults();
         return $top_results;
     }
 
