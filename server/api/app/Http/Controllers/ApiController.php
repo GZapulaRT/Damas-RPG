@@ -12,16 +12,35 @@ class ApiController extends Controller
 {
     public function oneUser($id){
         $user = new User;
-        $allusers = new UserRepository($user);
-        $allusers = $allusers->getOneUser($id);
-        return $allusers;
+        $user = new UserRepository($user);
+        $user = $user->getOneUser($id);
+
+        $user_rank = new RankRepository;
+        $user_rank = $user_rank->getSpecificRank($id);
+
+        if ($user->isEmpty()){
+            return response()->json(['message: ' => 'User not found'], 404);
+        }
+        return response()->json([
+            "id" => $id,
+            "name" => $user->name,
+            "image" => $user->image,
+            "country" => $user->country,
+            "description" => $user->description,
+            "created_at" => $user->created_at,
+            "updated_at" => $user->updated_at,
+            "rank" => $user_rank
+        ], 200);
     }
 
     public function allUsers(){
         $user = new User;
-        $users = new UserRepository($user);
-        $users = $users->getMultipleUsers();
-        return $users;
+        $all_users = new UserRepository($user);
+        $all_users = $all_users->getMultipleUsers();
+        if ($all_users->isEmpty()){
+            return response()->json(['message: ' => 'Users not found'], 404);
+        }
+        return response()->json($all_users, 200);
     }
 
     public function updateScore(Request $request){
@@ -34,12 +53,10 @@ class ApiController extends Controller
     public function topResults(){
         $top_results = new RankRepository();
         $top_results = $top_results->getTopResults();
-        return $top_results;
-    }
-
-    public function rank(){
-        $user = User::find(1)->rank()->get();
-        return $user;
+        if ($top_results->isEmpty()){
+            return response()->json(["Message: " => 'Users not found'], 404);
+        }
+        return response()->json($top_results, 200);
     }
 
     public function userRank(int $id) {

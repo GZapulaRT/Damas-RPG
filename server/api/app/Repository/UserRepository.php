@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Storage;
 
 class UserRepository{
 
-    /* private User $user; */
+    private User $user;
     private const PAGE_SIZE = 100;
 
     public function __construct(User $user) {
@@ -23,22 +23,8 @@ class UserRepository{
                     ->orderBy('users.name')
                     ->where('users.id', '=',$id)
                     ->get();
-        $user_rank = new RankRepository;
-        $user_rank = $user_rank->getSpecificRank($id);
-        if ($user->isEmpty()){
-            return response()->json(['message: ' => 'User not found'], 404);
-        }
         $user = $user[0];
-        return response()->json([
-            "id" => $id,
-            "name" => $user->name,
-            "image" => $user->image,
-            "country" => $user->country,
-            "description" => $user->description,
-            "created_at" => $user->created_at,
-            "updated_at" => $user->updated_at,
-            "rank" => $user_rank
-        ], 200);
+        return $user;
     }
 
     public function getMultipleUsers(){
@@ -47,11 +33,7 @@ class UserRepository{
                     ->select('users.id', 'users.name', 'users.image','users.description','countries.name', 'users.email', 'users.created_at', 'users.updated_at')
                     ->orderBy('users.name')
                     ->paginate(self::PAGE_SIZE);
-
-        if ($users->isEmpty()){
-            return response()->json(['message: ' => 'Users not found'], 404);
-        }
-        return response()->json($users, 200);
+        return $users;
     }
 
 public function store(Request $request): void {
@@ -59,7 +41,7 @@ public function store(Request $request): void {
         if ($request->hasFile("image")){
             $image = $request->file('image')->store('users');
         }
-        User::create([
+        $this->user::create([
             "name" => $request->name,
             "image" => $image,
             "country_id" => $request->country_id,
@@ -69,16 +51,16 @@ public function store(Request $request): void {
     }
 
     public function update(Request $request): void {
-        User::WhereId($request->id)->update([
+        $this->user::WhereId($request->id)->update([
             "name" => $request->name,
             "email" => $request->email,
             "description" => $request->description
         ]);
 		if ($request->image){
-			$image = User::find($request->id)->select('image')->get();
+			$image = $this->user::find($request->id)->select('image')->get();
 			Storage::delete($image);
 
-			User::whereId($request->id)->update([
+			$this->user::whereId($request->id)->update([
 					'image' => $request->file('image')->store('users')
 				]);
 		}
@@ -90,10 +72,10 @@ public function store(Request $request): void {
             $image = $request->file('image')->store('users');
         }
 
-        $old_image = User::WhereId($request->id)->select('image')->get();
+        $old_image = $this->user::WhereId($request->id)->select('image')->get();
         Storage::delete($old_image);
 
-        User::WhereId($request->id)->update([
+        $this->user::WhereId($request->id)->update([
             "image" => $image
         ]);
     }

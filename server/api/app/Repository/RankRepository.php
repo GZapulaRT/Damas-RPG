@@ -30,10 +30,7 @@ class RankRepository {
                             ->join('countries', 'users.country_id', '=', 'countries.id')
                             ->paginate(self::PAGE_SIZE);
 
-        if ($top_results->isEmpty()){
-            return response()->json(["Message: " => 'Users not found'], 404);
-        }
-        return response()->json($top_results, 200);
+        return $top_results;
     }
     public function getSpecificRank(int $id) {
         //TODO. not working at all lol 
