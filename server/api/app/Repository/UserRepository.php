@@ -30,7 +30,7 @@ class UserRepository{
     public function getMultipleUsers(){
         $users = DB::table('users')
                     ->join('countries', 'users.country_id', 'countries.id')
-                    ->select('users.id', 'users.name', 'users.image','users.description','countries.name', 'users.email', 'users.created_at', 'users.updated_at')
+                    ->select('users.id', 'users.name', 'users.image','users.description','countries.name')
                     ->orderBy('users.name')
                     ->paginate(self::PAGE_SIZE);
         return $users;
