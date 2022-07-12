@@ -22,6 +22,7 @@ use App\Http\Controllers\{ApiController};
 Route::controller(ApiController::class)->group(function () {
     Route::get('/user/one/{id}', 'oneUser');
     Route::get('/user', 'allUsers');
-    Route::get('/rank/{page?}', 'topResults');
+    Route::get('/rank', 'topResults');
+    Route::get('/rank/{id}', 'userRank');
     Route::post('/score/add', 'updateScore');
     });

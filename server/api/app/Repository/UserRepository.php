@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Storage;
 
 class UserRepository{
 
-    private User $user;
+    /* private User $user; */
     private const PAGE_SIZE = 100;
 
     public function __construct(User $user) {
@@ -19,14 +19,26 @@ class UserRepository{
     public function getOneUser(int $id) {
         $user = DB::table('users')
                     ->join('countries', 'users.country_id','=', 'countries.id')
-                    ->select('users.id', 'users.name', 'users.image', 'users.description','countries.name', 'users.email', 'users.created_at', 'users.updated_at')
+                    ->select('users.name', 'users.image', 'users.description','countries.name as country', 'users.email', 'users.created_at', 'users.updated_at')
                     ->orderBy('users.name')
                     ->where('users.id', '=',$id)
                     ->get();
+        $user_rank = new RankRepository;
+        $user_rank = $user_rank->getSpecificRank($id);
         if ($user->isEmpty()){
             return response()->json(['message: ' => 'User not found'], 404);
         }
-        return response()->json($user, 200);
+        $user = $user[0];
+        return response()->json([
+            "id" => $id,
+            "name" => $user->name,
+            "image" => $user->image,
+            "country" => $user->country,
+            "description" => $user->description,
+            "created_at" => $user->created_at,
+            "updated_at" => $user->updated_at,
+            "rank" => $user_rank
+        ], 200);
     }
 
     public function getMultipleUsers(){
@@ -42,7 +54,7 @@ class UserRepository{
         return response()->json($users, 200);
     }
 
-    public function store(Request $request): void {
+public function store(Request $request): void {
         $image = null;
         if ($request->hasFile("image")){
             $image = $request->file('image')->store('users');

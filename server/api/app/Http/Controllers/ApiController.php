@@ -41,4 +41,11 @@ class ApiController extends Controller
         $user = User::find(1)->rank()->get();
         return $user;
     }
+
+    public function userRank(int $id) {
+        $user_rank = new RankRepository;
+        $user_rank = $user_rank->getSpecificRank($id);
+        return $user_rank;
+    }
+
 }

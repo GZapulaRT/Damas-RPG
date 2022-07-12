@@ -5,6 +5,7 @@ use App\Jobs\ProcessRank;
 use App\Models\Rank;
 use App\Models\Score;
 use Illuminate\Support\Facades\DB;
+use Symfony\Component\HttpFoundation\Request;
 
 class RankRepository {
 
@@ -34,4 +35,14 @@ class RankRepository {
         }
         return response()->json($top_results, 200);
     }
+    public function getSpecificRank(int $id) {
+        //TODO. not working at all lol 
+        $user_rank = Rank::selectRaw("COUNT(*)+1 as rank")
+            ->whereRaw("current_score > (SELECT current_score 
+                                        FROM ranks 
+                                        WHERE user_id = {$id})")
+                            ->get();
+        return $user_rank[0]->rank;
+    }
+
 }
