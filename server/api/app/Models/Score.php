@@ -8,8 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class Score extends Model
 {
     use HasFactory;
-	protected $table = 'score';
-	protected $fillable = ['user_id', 'score_change', 'score_date'];
-	const CREATED_AT = 'score_date';
-	const UPDATED_AT = null;
+	protected $table = 'scores';
+	protected $fillable = ['user_id', 'change'];
+
+    const UPDATED_AT = null;
+
+    public Function rank(){
+        return $this->hasOne(Rank::class);
+    }
 }

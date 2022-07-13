@@ -2,72 +2,67 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\{User,Rank, Score};
+use App\Repository\RankRepository;
+use App\Repository\UserRepository;
 use Illuminate\Http\Request;
 
-use App\Models\Player;
-use App\Models\Score;
-use App\Models\Status;
 
 class ApiController extends Controller
 {
-	public function AddUser(request $request) {
-		// Add a new user to our user table
-		$user = new Player;
-	    $user->user_name = $request->user_name;	
-		$user->country_code = $request->country_code;
-		$user->save();
+    public function oneUser($id){
+        $user = new User;
+        $user = new UserRepository($user);
+        $user = $user->getOneUser($id);
 
-		return response()->json([
-			"message" => "essa bagaça funciona por Magica(\$seiLáOq)"
-		], 201);
+        $user_rank = new RankRepository;
+        $user_rank = $user_rank->getSpecificRank($id);
 
+        if ($user->isEmpty()){
+            return response()->json(['message: ' => 'User not found'], 404);
+        }
+        return response()->json([
+            "id" => $id,
+            "name" => $user->name,
+            "image" => $user->image,
+            "country" => $user->country,
+            "description" => $user->description,
+            "created_at" => $user->created_at,
+            "updated_at" => $user->updated_at,
+            "rank" => $user_rank
+        ], 200);
+    }
 
-	}
-	public function UpdateUser(request $id) {
-		//Update Username and country in our user table
+    public function allUsers(){
+        $user = new User;
+        $all_users = new UserRepository($user);
+        $all_users = $all_users->getMultipleUsers();
+        if ($all_users->isEmpty()){
+            return response()->json(['message: ' => 'Users not found'], 404);
+        }
+        return response()->json($all_users, 200);
+    }
 
-	}
- 
-	public function UpdateScoreData(request $request) {
-		// Add a score record to our score table. Used to add all
-		// score records to give us the user rank placement
-		$score = new Score;
-		$score->user_id = $request->user_id;
-		$score->score_change = $request->score_change;
-		$score->save();
-		
-		return response()->json([
-			"message" => "essa bagaça funciona por Magica(\$seiLáOq)"
-		], 201);
+    public function updateScore(Request $request){
+        $user_id = $request->user_id;
+        $change = $request->change;
+        $response = Score::updateScore($user_id, $change);
+        return $response;
+    }
 
-	}
+    public function topResults(){
+        $top_results = new RankRepository();
+        $top_results = $top_results->getTopResults();
+        if ($top_results->isEmpty()){
+            return response()->json(["Message: " => 'Users not found'], 404);
+        }
+        return response()->json($top_results, 200);
+    }
 
-	public function UpdateStatus(request $request) {
-		// Add a status record in our status table. Used to have a record
-		// of penalizations of the user and the current state of their status.
-		// Also have comments in case clarification is needed
-		$status = new Status;
-		$status->user_id = $request->user_id;
-		$status->status_change = $request->status_change;
-		$status->status_comment = $request->status_comment;
-		$status->save();
+    public function userRank(int $id) {
+        $user_rank = new RankRepository;
+        $user_rank = $user_rank->getSpecificRank($id);
+        return $user_rank;
+    }
 
-		return response()->json([
-			"message" => "essa bagaça funciona por Magica(\$seiLáOq)"
-		], 201);
-	}
-
-	public function GetAllUsers($place, $numberOfUsers) {
-		// Get all users from a specific place (or the whole world in case of NULL)
-		// for the ranking page
-	}
-
-	public function GetSpecificUser ($id) {
-		//Get one user info for the user personal page
-	}
-
-	/* //if people want to implement in the future */
-	/* public function GetAllStatusRecord ($id){ */
-	/* 	//users history of status changes */
-	/* } */
 }

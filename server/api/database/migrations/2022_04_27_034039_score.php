@@ -13,10 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('user', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
-        });
+		Schema::create('scores', function(Blueprint $table){
+			$table->id();
+			$table->foreignId('user_id')->constrained();
+			$table->bigInteger('change');
+			$table->timestamp('created_at');
+		});
     }
 
     /**
@@ -26,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-		Schema::dropIfExists('user');
+    	Schema::dropIfExists('scores');
     }
 };

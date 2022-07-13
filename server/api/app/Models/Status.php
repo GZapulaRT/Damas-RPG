@@ -8,7 +8,11 @@ class Status extends Model
 {
     use HasFactory;
 	protected $table = 'status';
-	protected $fillable = ['user_id', 'status_current', 'status_comment', 'status_date'];
-	const CREATED_AT = 'status_date';
-	const UPDATED_AT = null;
+	protected $fillable = ['user_id', 'status', 'status'];
+
+
+    function status(){
+        return $this->hasOne(User::class);
+    }
+
 }
