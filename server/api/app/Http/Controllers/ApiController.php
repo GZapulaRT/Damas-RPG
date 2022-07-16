@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\{User,Rank, Score};
 use App\Repository\RankRepository;
+use App\Repository\ScoreRepository;
 use App\Repository\UserRepository;
 use Illuminate\Http\Request;
 
@@ -44,10 +45,7 @@ class ApiController extends Controller
     }
 
     public function updateScore(Request $request){
-        $user_id = $request->user_id;
-        $change = $request->change;
-        $response = Score::updateScore($user_id, $change);
-        return $response;
+        return;
     }
 
     public function topResults(){
@@ -63,6 +61,18 @@ class ApiController extends Controller
         $user_rank = new RankRepository;
         $user_rank = $user_rank->getSpecificRank($id);
         return $user_rank;
+    }
+
+    public function storeUser(Request $request) {
+        $user = new UserRepository(new User);
+        $user = $user->store($request);
+        return response()->json(["Message" => "User added sucessfully"], 201);
+    }
+
+    public function storeScore(Request $request) {
+        $score = new ScoreRepository(new Score);
+        $score->store($request);
+        return response()->json(['Message: ' => 'Score added sucessfully'], 201);
     }
 
 }

@@ -1,19 +1,24 @@
 <?php
 namespace App\Repository;
 
-use App\Models\Rank;
 use App\Models\Score;
+use Illuminate\Http\Request;
 
 class ScoreRepository {
+    private $score;
 
-    public function updateScore($user_id, $change){
-        $score = new Score;
-        $score = $score::create([
-            'user_id' => $user_id,
-            'change' => $change
+    public function __construct(Score $score) {
+        $this->score = $score;
+    }
+
+    public function store(Request $request){
+        $score = $this->score::create([
+            'user_id' => $request->user_id,
+            'change' => $request->change
         ]);
 
-        Rank::updateRanks($score);
+        $updateRanksJob= new RankRepository;
+        $updateRanksJob->updateRanks($score);
         return response()->json(['message: ' => 'Score added sucessfuly'], 201);
         //criar evento de atualizar rank
     }

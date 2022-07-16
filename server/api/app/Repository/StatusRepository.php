@@ -1,13 +1,13 @@
 <?php
 namespace App\Repository;
 
-use App\Models\Score;
+use App\Models\Status;
 
-class StatusRepository 
+class StatusRepository
 {
     function latestStatus($id){
-        $lastestScore = new Score;
-        $lastestScore = $lastestScore->find($id)->latest();
-        return $lastestScore;
+        $latestScore = new Status();
+        $latestScore = $latestScore->find($id)->latest();
+        return $latestScore;
     }
 }
