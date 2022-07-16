@@ -1,16 +1,22 @@
 <?php
 namespace App\Repository;
 
+use App\Jobs\CreateUserRankJob;
 use App\Jobs\ProcessRank;
 use App\Models\Rank;
 use App\Models\Score;
-use Illuminate\Support\Facades\DB;
-use Symfony\Component\HttpFoundation\Request;
+use App\Models\User;
 
 class RankRepository {
 
     public const PAGE_HOME= 10;
     public const PAGE_SIZE = 50;
+
+    public function store(User $user): void {
+        $createNewRankJob = new CreateUserRankJob($user);
+        $createNewRankJob->dispatch($user);
+    }
+    
 
     public function updateRanks(Score $score) :void {
         $queue = new ProcessRank($score);
@@ -19,7 +25,7 @@ class RankRepository {
 
     public function getTopResults(){
 
-        $top_results = Rank::selectRaw('
+        $topResult = Rank::selectRaw('
                                 ranks.current_score,
                                 users.name,
                                 users.id,
@@ -30,16 +36,15 @@ class RankRepository {
                             ->join('countries', 'users.country_id', '=', 'countries.id')
                             ->paginate(self::PAGE_SIZE);
 
-        return $top_results;
+        return $topResult;
     }
     public function getSpecificRank(int $id) {
-        //TODO. not working at all lol 
-        $user_rank = Rank::selectRaw("COUNT(*)+1 as rank")
+        $userRank = Rank::selectRaw("COUNT(*)+1 as rank")
             ->whereRaw("current_score > (SELECT current_score 
                                         FROM ranks 
                                         WHERE user_id = {$id})")
                             ->get();
-        return $user_rank[0]->rank;
+        return $userRank[0]->rank;
     }
 
 }

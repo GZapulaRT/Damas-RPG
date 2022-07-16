@@ -14,4 +14,8 @@ class DatabaseUserTest extends TestCase
     public function testIfGetOneUser(){
         $this->assertTrue(true);
     }
+    public function testIf() {
+
+        }
+    
 }

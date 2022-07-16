@@ -36,18 +36,21 @@ class UserRepository{
         return $users;
     }
 
-public function store(Request $request): void {
-        $image = null;
-        if ($request->hasFile("image")){
-            $image = $request->file('image')->store('users');
+    public function store(Request $request): void {
+            $image = null;
+            if ($request->hasFile("image")){
+                $image = $request->file('image')->store('users');
         }
-        $this->user::create([
+        $user = $this->user::create([
             "name" => $request->name,
             "image" => $image,
             "country_id" => $request->country_id,
             "email" => $request->email,
             "password" => Hash::make($request->password),
         ]);
+
+        $createRank = new RankRepository;
+        $createRank->store($user);
     }
 
     public function update(Request $request): void {
@@ -79,4 +82,9 @@ public function store(Request $request): void {
             "image" => $image
         ]);
     }
+
+    public function delete(int $id): void {
+        $this->user->find($id)->destroy();
+        }
+
 }

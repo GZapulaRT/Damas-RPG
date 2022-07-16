@@ -2,28 +2,27 @@
 
 namespace App\Jobs;
 
-use App\Models\Score;
+use App\Models\Rank;
+use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\DB;
 
-class ProcessRank implements ShouldQueue
+class CreateUserRankJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    private $score;
     private $user_id;
+    private $current_score=0;
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct(Score $score) {
-        $this->score = $score->change;
-        $this->user_id = $score->user_id;
+    public function __construct(User $user) {
+        $this->user_id = $user->id;
     }
 
     /**
@@ -33,6 +32,10 @@ class ProcessRank implements ShouldQueue
      */
     public function handle()
     {
-        return DB::table('ranks')->where('user_id', $this->user_id)->increment('current_score', $this->score);
+        return Rank::create([
+            "user_id" => $this->user_id,
+            "current_score" => $this->current_score,
+        ]);
     }
 }
+
