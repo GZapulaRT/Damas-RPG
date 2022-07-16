@@ -31,7 +31,7 @@ class RankRepository {
                                 users.id,
                                 users.image,
                                 countries.name as country,
-                                RANK() OVER (ORDER BY ranks.current_score) as Rank')
+                                RANK() OVER (ORDER BY ranks.current_score DESC) as Rank')
                             ->join('users', 'users.id', '=', 'ranks.user_id')
                             ->join('countries', 'users.country_id', '=', 'countries.id')
                             ->orderByDesc('ranks.current_score')
@@ -41,7 +41,7 @@ class RankRepository {
     }
     public function getSpecificRank(int $id) {
         $userRank = Rank::selectRaw("COUNT(*)+1 as rank")
-            ->whereRaw("current_score > (SELECT current_score 
+                        ->whereRaw("current_score > (SELECT current_score 
                                         FROM ranks 
                                         WHERE user_id = {$id})")
                             ->get();
