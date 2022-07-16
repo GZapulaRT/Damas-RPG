@@ -34,6 +34,7 @@ class RankRepository {
                                 RANK() OVER (ORDER BY ranks.current_score) as Rank')
                             ->join('users', 'users.id', '=', 'ranks.user_id')
                             ->join('countries', 'users.country_id', '=', 'countries.id')
+                            ->orderByDesc('ranks.current_score')
                             ->paginate(self::PAGE_SIZE);
 
         return $topResult;
